@@ -10,18 +10,15 @@
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-sm-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/"><i class="bi bi-house-door-fill"></i>Accueil</a>
+                            <a v-bind:class="{ active: $route.name == 'Home' }" class="nav-link" aria-current="page" href="/"><i class="bi bi-house-door-fill"></i>Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/persons"><i class="bi bi-binoculars-fill"></i>Personnes</a>
+                            <a v-bind:class="{ active: $route.name == 'Persons' }" class="nav-link" href="/persons"><i class="bi bi-binoculars-fill"></i>Personnes</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ">
                         <li class="nav-item">
-                            <a class="nav-link" href="/login"><i class="bi bi-person-check-fill"></i>Connexion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/register"><i class="bi bi-person-plus-fill"></i>Inscription</a>
+                            <a v-bind:class="{ active: $route.name == 'Login' }" class="nav-link" href="/login"><i class="bi bi-person-check-fill"></i>Connexion</a>
                         </li>
                     </ul>
                 </div>
@@ -43,7 +40,5 @@
     } from "vue-property-decorator";
 
     @Component
-    export default class Navbar extends Vue {
-
-    }
+    export default class Navbar extends Vue {}
 </script>

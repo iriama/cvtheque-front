@@ -10,8 +10,6 @@
                 <label for="password">Mot de passe</label>
                 <input v-model="password" id="password" class="form-control" type="password" placeholder="mot de passe">
                 
-                <p>Vous n'êtes pas encore inscrit? <a href="/register">S'inscrire</a>.</p>
-                
                 <div class="right">
                     <button id="submit" type="submit" class="btn btn-primary">Se connecter</button>
                 </div>
@@ -30,11 +28,11 @@
             max-width: 500px;
             form {
                 display: block;
-                p {
-                    margin-bottom: 10px;
-                }
                 .right {
                     text-align: right;
+                }
+                #submit {
+                    margin-top: 10px;
                 }
             }
         }

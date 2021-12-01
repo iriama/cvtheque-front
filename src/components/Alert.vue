@@ -13,6 +13,9 @@
     #box {
         border-radius: 0;
     }
+    #alert {
+        margin-bottom: 25px;
+    }
 </style>
 
 <script lang="ts">
