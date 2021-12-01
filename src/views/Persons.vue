@@ -23,19 +23,21 @@
                     </div>
                 </div>
             </div>
-            <div id="persons-container">
+            <Spinner v-if="loading" />
+            <div v-else id="persons-container">
                 <div class="card">
                     <div class="card-header">
                         <h1 v-if="$route.query.name">Résultats de recherche pour "{{ $route.query.name }}"</h1>
                         <h1 v-else-if="$route.query.activity">Résultats de recherche pour le poste "{{ $route.query.activity }}"</h1>
                         <h1 v-else>Toutes les personnes</h1>
                     </div>
+                    <p class="empty" v-if="!persons || persons.length == 0">Aucun résultat.</p>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" v-for="person in persons" :key="person.id">
                             <a :href="'/persons/' + person.id">
-                                <!--<span class="badge-container">
-                                    <span class="badge rounded-pill bg-secondary">{{ person.last_activity }}</span>
-                                </span>-->
+                                <span v-for="title in person.professionalTitles" :key="title" class="badge-container">
+                                    <span class="badge rounded-pill bg-secondary">{{ title }}</span>
+                                </span>
                                 <p>{{ person.firstname | capitalize }} {{ person.lastname | capitalize }}</p>
                                 <small v-if="person.website"><a class="website" :href="person.website | webify"
                                         target="_blank">{{ person.website | webify }}</a></small>
@@ -72,58 +74,68 @@
         margin-top: 25px;
     }
 
-    .badge-container {
-        float: right;
-    }
+    #persons {
 
-    #search-addon {
-        background: none;
-        cursor: pointer;
-    }
-
-    #search-container {
-        width: 100%;
-    }
-
-    #search,
-    #type {
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    #type {
-        margin-top: 3px;
-    }
-
-    .card {
-        h1 {
-            font-size: 1.2em;
+        .empty {
+            padding: 10px;
         }
-        .list-group-item {
-            min-height: 65px;
 
-            p {
-                margin-bottom: 0;
-            }
-
-            a {
-                text-decoration: none;
-                color: black;
-            }
-            .website {
-                color: rgb(109, 109, 109)
+        .badge-container {
+            float: right;
+            .badge {
+                margin-left: 4px;
             }
         }
 
-        .card-footer {
-            ul {
-                margin: 0;
+        #search-addon {
+            background: none;
+            cursor: pointer;
+        }
+
+        #search-container {
+            width: 100%;
+        }
+
+        #search,
+        #type {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #type {
+            margin-top: 3px;
+        }
+
+        .card {
+            h1 {
+                font-size: 1.2em;
+            }
+            .list-group-item {
+                min-height: 65px;
+
+                p {
+                    margin-bottom: 0;
+                }
+
+                a {
+                    text-decoration: none;
+                    color: black;
+                }
+                .website {
+                    color: rgb(109, 109, 109)
+                }
+            }
+
+            .card-footer {
+                ul {
+                    margin: 0;
+                }
             }
         }
-    }
 
-    .page-link {
-        cursor: pointer;
+        .page-link {
+            cursor: pointer;
+        }
     }
 </style>
 
@@ -133,12 +145,14 @@
         Vue
     } from "vue-property-decorator";
     import Alert from '@/components/Alert.vue';
-    import { api, Person } from '@/services/ApiService';
-import { Route } from "vue-router";
+    import Spinner from '@/components/Spinner.vue';
+    import { ActivityType, api, Person } from '@/services/ApiService';
+    import { Route } from "vue-router";
 
     @Component({
         components: {
-            Alert
+            Alert,
+            Spinner
         }
     })
     export default class Persons extends Vue {
@@ -152,6 +166,7 @@ import { Route } from "vue-router";
         page_1 = 1;
         page_2 = 2;
         page_3 = 3;
+        loading = false;
 
         search(): void {
             if (this.searchInput.length > 0) {
@@ -169,6 +184,9 @@ import { Route } from "vue-router";
         }
 
         refresh(route: Route) {
+
+            this.loading = true;
+
             let page = 1;
             try {
                 if (typeof(route.query.page) == "string") {
@@ -185,11 +203,13 @@ import { Route } from "vue-router";
 
             api.persons(page, route.query.name as string, route.query.activity as string).subscribe(r => {
                 this.persons = r;
+                console.log(r);
                 if (r.length < 10) {
                     this.page_3 = page;
                     this.page_2 = page > 1 ? page - 1 : page;
                     this.page_1 = page > 2 ? page - 2 : page;
                 }
+                this.loading = false;
             });
         }
 

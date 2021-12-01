@@ -1,7 +1,8 @@
 <template>
     <div id="alert">
         <div v-bind:class="{ hidden:  isEmpty }" id="box" class="alert alert-danger" role="alert">
-            {{message}}
+            {{ message }}
+            <a v-if="returnUrl && returnText" :href="returnUrl">{{returnText}}</a>
         </div>
     </div>
 </template>
@@ -30,6 +31,8 @@
     @Component
     export default class Alert extends Vue {
         @Prop(String) message: string | undefined;
+        @Prop(String) returnUrl: string | undefined;
+        @Prop(String) returnText: string | undefined;
         @Provide() isEmpty = true
         
         @Watch("message")
