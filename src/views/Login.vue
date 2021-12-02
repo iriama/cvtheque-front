@@ -41,6 +41,7 @@
 
 <script lang="ts">
     import Alert from '@/components/Alert.vue';
+    import { api } from '@/services/ApiService';
     
     import {
         Component,
@@ -63,7 +64,11 @@
             if (this.email == "" || this.password == "") this.error = "Merci de remplir tous les champs."
             else {
                 this.error = ""
-                alert("connexion... " + this.email + " ; " + this.password)
+                api.signin(this.email, this.password).subscribe(r => {
+                    console.log(r.data);
+                }, e => {
+                    console.log(e.response);
+                });
             }
             
             e.preventDefault();

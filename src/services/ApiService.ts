@@ -36,6 +36,20 @@ export default class ApiService {
             baseURL: url,
             headers: { "Content-Type": "application/json" }
         });
+
+        /*this.http.interceptors.request.use(request => {
+            request.headers = {"Authorization": "Bearer 0x", ... request.headers }
+            return Promise.resolve(request);
+        });*/
+
+        this.http.interceptors.response.use(response => {
+            return Promise.resolve(response);
+        }, error => {
+            if (error.response.status == 404) document.location.href = "/";
+            else if (error.response.status == 403) document.location.href = "/login";
+
+            return Promise.reject(error);
+        });
     }
 
     persons(page: number, name: string, activity: string) {
@@ -50,6 +64,11 @@ export default class ApiService {
 
     person(id: number) {
         return from (this.http.get<Person>("/persons/" + id).then(r => r.data));
+    }
+
+    signin(email: string, password: string) {
+        console.log({ email, password } );
+        return from (this.http.post<string>("/signin", { email, password }));
     }
 }
 
