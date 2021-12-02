@@ -21,7 +21,7 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                                 data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                                aria-selected="false">Expériences</button>
+                                aria-selected="false">Expériences et projets</button>
                         </li>
                     </ul>
                 </div>
@@ -37,7 +37,7 @@
                                 :href="person.website | webify" target="_blank">{{ person.website | webify }}</a></div>
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <div v-if="!person.activities || person.activities.length == 0">Aucune expérience renseignée.</div>
+                        <div v-if="!person.activities || person.activities.length == 0">Aucune expérience ou projet renseigné.</div>
                         <div v-for="activity in person.activities" :key="activity.id" class="activity">
                             <span v-if="activity.type == 'PERSONAL'" class="badge rounded-pill bg-success">Projet personnel</span>
                             <span v-else-if="activity.type == 'PROFESSIONAL'" class="badge rounded-pill bg-primary">Expérience professionnelle</span>

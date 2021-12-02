@@ -34,14 +34,14 @@
                     <p class="empty" v-if="!persons || persons.length == 0">Aucun résultat.</p>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" v-for="person in persons" :key="person.id">
-                            <a :href="'/persons/' + person.id">
+                            <router-link :to="{ name: 'CV', params: { id: person.id } }" :href="'/persons/' + person.id">
                                 <span v-for="title in person.professionalTitles" :key="title" class="badge-container">
                                     <span class="badge rounded-pill bg-secondary">{{ title }}</span>
                                 </span>
                                 <p>{{ person.firstname | capitalize }} {{ person.lastname | capitalize }}</p>
                                 <small v-if="person.website"><a class="website" :href="person.website | webify"
                                         target="_blank">{{ person.website | webify }}</a></small>
-                            </a>
+                            </router-link>
                         </li>
                     </ul>
                     <div class="card-footer">

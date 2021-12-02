@@ -53,4 +53,4 @@ export default class ApiService {
     }
 }
 
-export const api: ApiService = new ApiService( "https://9a6c-46-193-69-4.ngrok.io/api" );
+export const api: ApiService = new ApiService( "http://localhost:8081/api" );
