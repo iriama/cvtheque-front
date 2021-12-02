@@ -2,8 +2,10 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import Logout from '../views/Logout.vue'
 import Persons from '../views/Persons.vue'
 import CV from '../views/CV.vue'
+import Account from '../views/Account.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,11 @@ const routes: Array<RouteConfig> = [
     component: Login
   },
   {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
+  },
+  {
     path: '/persons',
     name: 'Persons',
     component: Persons
@@ -35,6 +42,11 @@ const routes: Array<RouteConfig> = [
     path: '/persons/:id',
     name: 'CV',
     component: CV
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: Account
   }
 ]
 

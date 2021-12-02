@@ -16,7 +16,15 @@
                             <router-link v-bind:class="{ active: $route.name == 'Persons' }" class="nav-link" :to="{ name: 'Persons' }"><i class="bi bi-binoculars-fill"></i>Personnes</router-link>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ">
+                    <ul v-if="api.loggedIn() && $route.name != 'Logout'" class="navbar-nav">
+                        <li class="nav-item">
+                            <router-link v-bind:class="{ active: $route.name == 'Account' }" class="nav-link" :to="{ name: 'Account' }"><i class="bi bi-person-fill"></i>Compte</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" :to="{ name: 'Logout' }"><i class="bi bi-door-closed-fill"></i>Déconnexion</router-link>
+                        </li>
+                    </ul>
+                    <ul v-else class="navbar-nav">
                         <li class="nav-item">
                             <router-link v-bind:class="{ active: $route.name == 'Login' }" class="nav-link" :to="{ name: 'Login' }"><i class="bi bi-person-check-fill"></i>Connexion</router-link>
                         </li>
@@ -34,11 +42,16 @@
 </style>
 
 <script lang="ts">
+    import { api } from '@/services/ApiService';
+
     import {
         Component,
         Vue
     } from "vue-property-decorator";
+    import { Route } from 'vue-router';
 
     @Component
-    export default class Navbar extends Vue {}
+    export default class Navbar extends Vue {
+        api = api;
+    }
 </script>

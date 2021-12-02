@@ -29,24 +29,29 @@ export interface Person {
 }
 
 export default class ApiService {
-    private http: AxiosInstance;
-
+    private http: AxiosInstance;        
+    
     constructor(url: string) {
         this.http = axios.create({
             baseURL: url,
             headers: { "Content-Type": "application/json" }
         });
 
-        /*this.http.interceptors.request.use(request => {
-            request.headers = {"Authorization": "Bearer 0x", ... request.headers }
+        this.http.interceptors.request.use(request => {
+            const token = this.getToken();
+            if (token) {
+                request.headers = {"Authorization": "Bearer " + token, ... request.headers }
+            }
+
             return Promise.resolve(request);
-        });*/
+        });
 
         this.http.interceptors.response.use(response => {
             return Promise.resolve(response);
         }, error => {
             if (error.response.status == 404) document.location.href = "/";
             else if (error.response.status == 403) document.location.href = "/login";
+            else if (error.response.status == 500 && this.loggedIn()) document.location.href = "/logout";
 
             return Promise.reject(error);
         });
@@ -67,8 +72,23 @@ export default class ApiService {
     }
 
     signin(email: string, password: string) {
-        console.log({ email, password } );
         return from (this.http.post<string>("/signin", { email, password }));
+    }
+
+    private getToken() {
+        return localStorage.getItem("jwtToken");    
+    }
+
+    loggedIn() {
+        return !!this.getToken();
+    }
+
+    clearToken() {
+        localStorage.removeItem("jwtToken");
+    }
+
+    setToken(token: string) {
+        localStorage.setItem("jwtToken", token);
     }
 }
 

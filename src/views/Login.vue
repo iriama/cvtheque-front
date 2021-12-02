@@ -1,7 +1,8 @@
 <template>
     <div id="login">
         <Alert v-bind:message="error" />
-        <div class="container">
+        <Spinner v-if="loading" />
+        <div v-else class="container">
             <h3><i class="bi bi-box-arrow-in-right"></i> Connexion</h3>
             <form @submit="login">
                 <label for="email">Adresse électronique</label>
@@ -41,6 +42,7 @@
 
 <script lang="ts">
     import Alert from '@/components/Alert.vue';
+    import Spinner from '@/components/Spinner.vue';
     import { api } from '@/services/ApiService';
     
     import {
@@ -51,23 +53,30 @@
 
     @Component({
         components: {
-            Alert
+            Alert,
+            Spinner
         }
     })
     export default class Login extends Vue {
 
         @Provide() email = ""
         @Provide() password = ""
+        loading = false
         error = ""
 
         login(e: Event): void {
             if (this.email == "" || this.password == "") this.error = "Merci de remplir tous les champs."
             else {
                 this.error = ""
+                this.loading = true;
                 api.signin(this.email, this.password).subscribe(r => {
-                    console.log(r.data);
+                    api.setToken(r.data);
+                    this.$router.push({ name: "Account" }).catch(e => console.log(e));
+
                 }, e => {
-                    console.log(e.response);
+                    if (e.response.status == 500) this.error = "Informations de connexion invalides."
+
+                     this.loading = false
                 });
             }
             

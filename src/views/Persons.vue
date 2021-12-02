@@ -203,7 +203,6 @@
 
             api.persons(page, route.query.name as string, route.query.activity as string).subscribe(r => {
                 this.persons = r;
-                console.log(r);
                 if (r.length < 10) {
                     this.page_3 = page;
                     this.page_2 = page > 1 ? page - 1 : page;
