@@ -208,6 +208,7 @@
                     this.page_2 = page > 1 ? page - 1 : page;
                     this.page_1 = page > 2 ? page - 2 : page;
                 }
+                
                 this.loading = false;
             });
         }

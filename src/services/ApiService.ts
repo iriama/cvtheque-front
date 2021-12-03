@@ -28,6 +28,10 @@ export interface Person {
     professionalTitles: string[]
 }
 
+export interface User extends Person {
+    birthdate: string
+}
+
 export default class ApiService {
     private http: AxiosInstance;        
     
@@ -50,7 +54,7 @@ export default class ApiService {
             return Promise.resolve(response);
         }, error => {
             if (error.response.status == 404) document.location.href = "/";
-            else if (error.response.status == 403) document.location.href = "/login";
+            else if (error.response.status == 403 || error.response.status == 401) document.location.href = "/login";
             else if (error.response.status == 500 && this.loggedIn()) document.location.href = "/logout";
 
             return Promise.reject(error);
@@ -73,6 +77,10 @@ export default class ApiService {
 
     signin(email: string, password: string) {
         return from (this.http.post<string>("/signin", { email, password }));
+    }
+
+    account() {
+        return from (this.http.get<User>("/account").then(r => r.data));
     }
 
     private getToken() {
