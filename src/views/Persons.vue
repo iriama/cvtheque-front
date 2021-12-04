@@ -34,7 +34,7 @@
                     <p class="empty" v-if="!persons || persons.length == 0">Aucun résultat.</p>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" v-for="person in persons" :key="person.id">
-                            <router-link :to="{ name: 'CV', params: { id: person.id } }" :href="'/persons/' + person.id">
+                            <router-link :to="{ name: 'CV', params: { id: person.id } }">
                                 <span v-for="title in person.professionalTitles" :key="title" class="badge-container">
                                     <span class="badge rounded-pill bg-secondary">{{ title }}</span>
                                 </span>

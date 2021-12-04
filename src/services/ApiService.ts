@@ -32,6 +32,15 @@ export interface User extends Person {
     birthdate: string
 }
 
+export interface UserEdit {
+    id: number,
+    firstname: string,
+    lastname: string,
+    password: string,
+    website: string,
+    birthdate: string
+}
+
 export default class ApiService {
     private http: AxiosInstance;        
     
@@ -81,6 +90,24 @@ export default class ApiService {
 
     account() {
         return from (this.http.get<User>("/account").then(r => r.data));
+    }
+
+    edit(edited: UserEdit) {
+        return from(this.http.put<User>("/account", edited).then(r => r.data));
+    }
+
+    deleteActivity(id: number) {
+        return from(this.http.delete<User>("/account/activity/" + id).then(r => r.data));
+    }
+
+    addActivity(activity: Activity) {
+        return from(this.http.post<User>("/account/activity", activity).then(r => r.data));
+    }
+
+    editActivity(activity: Activity) {
+        console.log(activity);
+        console.log(activity.id);
+        return from(this.http.put<User>("/account/activity", activity).then(r => r.data));
     }
 
     private getToken() {
