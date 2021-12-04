@@ -13,7 +13,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <div v-if="isActivity" id="add-container">
+                    <div v-if="isActivity && self" id="add-container">
                         <button id="addBtn" @click="addActivity()" type="button" class="btn btn-success btn btn-sm"><i class="bi bi-plus-lg"></i>
                             Ajouter</button>
                     </div>
@@ -302,7 +302,7 @@
             if  (!this.person?.activities) return;
             if (!finished) {
                 this.editMode = true;
-                this.toEdit = activity;
+                this.toEdit = { ... activity }; // clone
                 document.getElementById("inputBtn")?.click();
             } else {
                 api.editActivity(activity).subscribe(r => {

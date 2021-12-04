@@ -6,6 +6,7 @@ import Logout from '../views/Logout.vue'
 import Persons from '../views/Persons.vue'
 import CV from '../views/CV.vue'
 import Account from '../views/Account.vue'
+import Invite from '../views/Invite.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes: Array<RouteConfig> = [
     path: '/account',
     name: 'Account',
     component: Account
+  },
+  {
+    path: '/invite',
+    name: 'Invite',
+    component: Invite
   }
 ]
 

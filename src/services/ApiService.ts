@@ -9,36 +9,44 @@ export enum ActivityType {
 }
 
 export interface Activity {
-    id: number,
-    title: string,
-    description: string,
-    website: string,
-    year: number,
+    id: number;
+    title: string;
+    description: string;
+    website: string;
+    year: number;
     type: ActivityType
 }
 
 export interface Person {
-    id: number,
-    firstname: string,
-    lastname: string,
-    email: string,
-    website: string,
-    activities: Activity[],
-    age: number,
+    id: number;
+    firstname: string;
+    lastname: string;
+    email: string;
+    website: string;
+    activities: Activity[];
+    age: number;
     professionalTitles: string[]
 }
 
 export interface User extends Person {
-    birthdate: string
+    birthdate: string;
 }
 
 export interface UserEdit {
-    id: number,
-    firstname: string,
-    lastname: string,
-    password: string,
-    website: string,
+    id: number;
+    firstname: string;
+    lastname: string;
+    password: string;
+    website: string;
     birthdate: string
+}
+
+
+export interface UserInvite {
+    firstname: string;
+    lastname: string;
+    email: string,
+    password: string
 }
 
 export default class ApiService {
@@ -89,25 +97,27 @@ export default class ApiService {
     }
 
     account() {
-        return from (this.http.get<User>("/account").then(r => r.data));
+        return from (this.http.get<User>("/secure/account").then(r => r.data));
     }
 
     edit(edited: UserEdit) {
-        return from(this.http.put<User>("/account", edited).then(r => r.data));
+        return from(this.http.put<User>("/secure/account", edited).then(r => r.data));
     }
 
     deleteActivity(id: number) {
-        return from(this.http.delete<User>("/account/activity/" + id).then(r => r.data));
+        return from(this.http.delete<User>("/secure/account/activity/" + id).then(r => r.data));
     }
 
     addActivity(activity: Activity) {
-        return from(this.http.post<User>("/account/activity", activity).then(r => r.data));
+        return from(this.http.post<User>("/secure/account/activity", activity).then(r => r.data));
     }
 
     editActivity(activity: Activity) {
-        console.log(activity);
-        console.log(activity.id);
-        return from(this.http.put<User>("/account/activity", activity).then(r => r.data));
+        return from(this.http.put<User>("/secure/account/activity", activity).then(r => r.data));
+    }
+
+    invite(user: UserInvite) {
+        return from(this.http.post<User>("/secure/invite", user).then(r => r.data));
     }
 
     private getToken() {

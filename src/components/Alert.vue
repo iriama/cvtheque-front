@@ -1,6 +1,6 @@
 <template>
     <div id="alert">
-        <div v-bind:class="{ hidden:  isEmpty }" id="box" class="alert alert-danger" role="alert">
+        <div v-bind:class="{ hidden:  isEmpty, 'alert-danger': !success, 'alert-success': success  }" id="box" class="alert" role="alert">
             {{ message }}
             <a v-if="returnUrl && returnText" :href="returnUrl">{{returnText}}</a>
         </div>
@@ -33,6 +33,7 @@
         @Prop(String) message: string | undefined;
         @Prop(String) returnUrl: string | undefined;
         @Prop(String) returnText: string | undefined;
+        @Prop(String) success: boolean | undefined;
         @Provide() isEmpty = true
         
         @Watch("message")

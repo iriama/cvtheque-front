@@ -21,6 +21,9 @@
                             <router-link v-bind:class="{ active: $route.name == 'Account' }" class="nav-link" :to="{ name: 'Account' }"><i class="bi bi-person-fill"></i>Compte</router-link>
                         </li>
                         <li class="nav-item">
+                            <router-link v-bind:class="{ active: $route.name == 'Invite' }" class="nav-link" :to="{ name: 'Invite' }"><i class="bi bi-people-fill"></i>Cooptation</router-link>
+                        </li>
+                        <li class="nav-item">
                             <router-link class="nav-link" :to="{ name: 'Logout' }"><i class="bi bi-door-closed-fill"></i>Déconnexion</router-link>
                         </li>
                     </ul>
