@@ -1,10 +1,10 @@
 <template>
   <div id="home">
-    <div id="carouselDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div id="carousel" class="carousel carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active" data-bs-interval="5000">
@@ -29,11 +29,11 @@
         </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselDark" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselDark" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
@@ -60,7 +60,7 @@
 
     img {
       width: 100%;
-      filter: brightness(0.7);
+      filter: brightness(0.65);
     }
     .carousel-caption {
       background: rgba(0, 0, 0, 0.5);
@@ -73,9 +73,6 @@
     a {
       color: rgb(204, 252, 132);
       font-weight: bold;
-    }
-    .carousel-control-next-icon, .carousel-control-prev-icon {
-      filter: brightness(5);
     }
   }
 </style>
