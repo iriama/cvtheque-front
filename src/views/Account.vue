@@ -106,6 +106,11 @@
         components: {
             Alert,
             Spinner
+        },
+        metaInfo() {
+            return {
+                title: "Compte"
+            }
         }
     })
     export default class Account extends Vue {
@@ -119,12 +124,11 @@
         mounted() {
             api.account().subscribe(r => {
                 this.account = r;
-                console.log(r);
                 this.map();
             });
         }
 
-        map() {
+        map(): void {
             if (this.account) {
                 this.form = {
                     id: this.account.id,

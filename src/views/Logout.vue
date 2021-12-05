@@ -25,7 +25,13 @@
         Vue
     } from "vue-property-decorator";
 
-    @Component
+    @Component({
+        metaInfo() {
+            return {
+                title: "Déconnexion"
+            }
+        }
+    })
     export default class Logout extends Vue {
         mounted() {
             let redirectDelay = 0;

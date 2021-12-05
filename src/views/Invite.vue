@@ -81,6 +81,11 @@
         components: {
             Alert,
             Spinner
+        },
+        metaInfo() {
+            return {
+                title: "Cooptation"
+            }
         }
     })
     export default class Invite extends Vue {

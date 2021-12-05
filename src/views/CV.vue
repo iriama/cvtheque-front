@@ -247,13 +247,15 @@
         api,
         Person
     } from '@/services/ApiService';
-    import {
-        Route
-    } from "vue-router";
     @Component({
         components: {
             Alert,
             Spinner
+        },
+        metaInfo() {
+            return {
+                title: "CV"
+            }
         }
     })
     export default class CV extends Vue {
@@ -265,14 +267,13 @@
         activityErrors: any = null;
 
         self = false;
-
         isActivity = false;
 
         toDelete: Activity | null = null;
         toEdit: Activity | null = null;
         editMode = false;
 
-        refresh() {
+        refresh(): void {
             let id = -1;
             try {
                 id = parseInt(this.$route.params.id);
@@ -280,7 +281,10 @@
                 api.person(id).subscribe(r => {
                     if (!r) {
                         this.error = "La personne à l'identifiant '" + id + "' n'existe plus."
-                    } else this.person = r;
+                    } else {
+                        this.person = r;
+                        document.title = `CVthèque - ${this.$options.filters?.capitalize(this.person.lastname)} ${this.$options.filters?.capitalize(this.person.firstname)}`
+                    }
                     if (api.loggedIn()) {
                         api.account().subscribe(a => {
                             if (a && a.id == r.id) this.self = true;
@@ -295,7 +299,7 @@
             }
         }
 
-        activityBadge(activity: Activity) {
+        activityBadge(activity: Activity): string | undefined {
             return activity.type?.substring(0, 2).toUpperCase();
         }
 
@@ -332,7 +336,7 @@
         }
 
 
-        addActivity(activity: Activity) {
+        addActivity(activity: Activity): void {
             this.activityErrors = null;
             if (!this.person?.activities) return;
             if (!activity) {
@@ -355,7 +359,7 @@
             }
         }
 
-        mounted() {
+        mounted(): void {
             this.refresh();
         }
     }

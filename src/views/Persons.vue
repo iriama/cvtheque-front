@@ -153,6 +153,11 @@
         components: {
             Alert,
             Spinner
+        },
+        metaInfo() {
+            return {
+                title: "Annuaire"
+            }
         }
     })
     export default class Persons extends Vue {

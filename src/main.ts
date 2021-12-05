@@ -5,6 +5,14 @@ import router from './router'
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
+import Meta from 'vue-meta';
+
+Vue.use(Meta, {
+  keyName: 'metaInfo', 
+  attribute: 'data-vue-meta', 
+  ssrAttribute: 'data-vue-meta-ssr', 
+  tagIDKeyName: 'vmid'
+});
 
 Vue.config.productionTip = false
 

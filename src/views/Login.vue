@@ -61,6 +61,11 @@
         components: {
             Alert,
             Spinner
+        },
+        metaInfo() {
+            return {
+                title: "Connexion"
+            }
         }
     })
     export default class Login extends Vue {
