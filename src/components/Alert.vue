@@ -33,7 +33,7 @@
         @Prop(String) message: string | undefined;
         @Prop(String) returnUrl: string | undefined;
         @Prop(String) returnText: string | undefined;
-        @Prop(String) success: boolean | undefined;
+        @Prop(Boolean) success: boolean | undefined;
         @Provide() isEmpty = true
         
         @Watch("message")

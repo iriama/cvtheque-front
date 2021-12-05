@@ -5,12 +5,18 @@
         <div v-else class="container">
             <h3><i class="bi bi-box-arrow-in-right"></i> Connexion</h3>
             <form @submit="login">
-                <label for="email">Adresse électronique</label>
-                <input v-model="email" id="email" class="form-control" type="email" placeholder="name@example.com">
-                
+                <label for="email">Adresse mail</label>
+                <input v-bind:class="{ 'is-invalid': errors && errors.email }" v-model="email" id="email" class="form-control" type="email" placeholder="exemple@domaine.com" aria-describedby="validationEmail">
+                <div v-if="errors && errors.email" id="validationEmail" class="invalid-feedback">
+                    {{ errors.email | error }}
+                </div>
+
                 <label for="password">Mot de passe</label>
-                <input v-model="password" id="password" class="form-control" type="password" placeholder="mot de passe">
-                
+                <input v-bind:class="{ 'is-invalid': errors && errors.password }" v-model="password" id="password" class="form-control" type="password" placeholder="mot de passe" aria-describedby="validationPassword">
+                <div v-if="errors && errors.password" id="validationPassword" class="invalid-feedback">
+                    {{ errors.password | error }}
+                </div>
+
                 <div class="right">
                     <button id="submit" type="submit" class="btn btn-primary">Se connecter</button>
                 </div>
@@ -63,22 +69,27 @@
         @Provide() password = ""
         loading = false
         error = ""
+        errors: any = null;
 
         login(e: Event): void {
-            if (this.email == "" || this.password == "") this.error = "Merci de remplir tous les champs."
-            else {
-                this.error = ""
-                this.loading = true;
-                api.signin(this.email, this.password).subscribe(r => {
-                    api.setToken(r.data);
-                    this.$router.push({ name: "Account" }).catch(e => console.log(e));
+            this.error = ""
+            this.loading = true;
+            this.errors = null;
 
-                }, e => {
-                    if (e.response.status == 500) this.error = "Informations de connexion invalides."
+            api.signin(this.email, this.password).subscribe(r => {
+                api.setToken(r.data);
+                this.$router.push({ name: "Account" }).catch(e => console.log(e));
 
-                     this.loading = false
-                });
-            }
+            }, e => {
+                if (e.response?.status == 400 && e.response?.data) {
+                    this.errors = e.response.data;
+                    this.error = "Formulaire de connexion invalide, veuillez corriger les erreurs ci-dessous."
+                    this.errors = e.response.data;
+                }
+                else if (e.response.status == 500) this.error = "Informations de connexion invalides.";
+
+                this.loading = false
+            });
             
             e.preventDefault();
         }

@@ -31,7 +31,7 @@
             let redirectDelay = 0;
             if (api.loggedIn()) {
                 api.clearToken();
-                redirectDelay = 1000;
+                redirectDelay = 250;
             }
             setTimeout(() => this.$router.push({ name: 'Home' }).catch(e => console.log(e)), redirectDelay)
         }

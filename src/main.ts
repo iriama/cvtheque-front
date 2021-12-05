@@ -14,6 +14,21 @@ Vue.filter("capitalize", function (value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 });
 
+Vue.filter("error", function (value: string) {
+
+  if (value == "BLANK") return "Le champ ne doit pas être vide";
+  if (value == "FORMAT") return "Format incorrect";
+  if (value.startsWith("MIN_")) return "La valeur doit être supérieure ou égale à " + value.split("_")[1];
+  if (value.startsWith("MAX_")) return "La valeur doit être inférieure ou égale à " + value.split("_")[1];
+  if (value.startsWith("LENGTH_")) {
+    const s = value.split("_");
+    return `La longueur doit être comprise entre ${s[1]} et ${s[2]} caractères`;
+  }
+
+  return "Invalide";
+});
+
+
 Vue.filter("webify", function (value: string) {
   if (!value) return '';
   value = value.toLowerCase();

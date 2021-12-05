@@ -105,34 +105,49 @@
                     <div class="modal-body" v-if="toEdit">
                         <div class="mb-2">
                             <label  class="form-label" for="year">Année</label>
-                            <input class="form-control" type="number" id="year" placeholder="2020" v-model="toEdit.year" />
+                            <input v-bind:class="{ 'is-invalid': activityErrors && activityErrors.year }" class="form-control" type="number" id="year" placeholder="2020" v-model="toEdit.year" aria-describedby="validationYear" />
+                            <div v-if="activityErrors && activityErrors.year" id="validationYear" class="invalid-feedback">
+                                {{ activityErrors.year | error }}
+                            </div>
                         </div>
                         <div class="mb-2">
                             <label  class="form-label" for="type">Type</label>
-                            <select class="form-control" name="select" v-model="toEdit.type">
+                            <select v-bind:class="{ 'is-invalid': activityErrors && activityErrors.type }" class="form-control" name="select" v-model="toEdit.type" aria-describedby="validationType" >
                                 <option value="PROFESSIONAL">Expérience professionnelle</option>
                                 <option value="EDUCATIONAL">Projet académique</option>
                                 <option value="PERSONAL">Projet personnel</option>
                                 <option value="OTHER">Autre</option>
                             </select>
+                            <div v-if="activityErrors && activityErrors.type" id="validationType" class="invalid-feedback">
+                                {{ activityErrors.type | error }}
+                            </div>
                         </div>
                         <div class="mb-2">
                             <label  class="form-label" for="title">Intitulé</label>
-                            <input class="form-control" type="text" id="title" placeholder="Mon super projet" v-model="toEdit.title" />
+                            <input v-bind:class="{ 'is-invalid': activityErrors && activityErrors.title }" class="form-control" type="text" id="title" placeholder="Mon super projet" v-model="toEdit.title" aria-describedby="validationTitle" />
+                            <div v-if="activityErrors && activityErrors.title" id="validationTitle" class="invalid-feedback">
+                                {{ activityErrors.title | error }}
+                            </div>
                         </div>
                         <div class="mb-2">
                             <label  class="form-label" for="description">Description</label>
-                            <textarea class="form-control" type="text" id="description" placeholder="Tâches effectuées, outils utilisés..." v-model="toEdit.description" />
+                            <textarea v-bind:class="{ 'is-invalid': activityErrors && activityErrors.description }" class="form-control" type="text" id="description" placeholder="Tâches effectuées, outils utilisés..." v-model="toEdit.description" aria-describedby="validationDescription" />
+                            <div v-if="activityErrors && activityErrors.description" id="validationDescription" class="invalid-feedback">
+                                {{ activityErrors.description | error }}
+                            </div>
                         </div>
                         <div class="mb-2">
                             <label  class="form-label" for="website">Site web</label>
-                            <input class="form-control" type="text" id="website" placeholder="https://mon-super-site.com" v-model="toEdit.website" />
+                            <input v-bind:class="{ 'is-invalid': activityErrors && activityErrors.website }" class="form-control" type="text" id="website" placeholder="https://mon-super-site.com" v-model="toEdit.website" aria-describedby="validationWebsite" />
+                            <div v-if="activityErrors && activityErrors.website" id="validationWebsite" class="invalid-feedback">
+                                {{ activityErrors.website | error }}
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                        <button @click="addActivity(toEdit)" type="button" class="btn btn-success" data-bs-dismiss="modal" v-if="!editMode">Ajouter</button>
-                        <button @click="editActivity(toEdit, true)" type="button" class="btn btn-success" data-bs-dismiss="modal" v-else>Modifier</button>
+                        <button id="closeInputModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button @click="addActivity(toEdit)" type="button" class="btn btn-success" v-if="!editMode">Ajouter</button>
+                        <button @click="editActivity(toEdit, true)" type="button" class="btn btn-success" v-else>Modifier</button>
                     </div>
                 </div>
             </div>
@@ -225,9 +240,7 @@
     import Spinner from '@/components/Spinner.vue';
     import {
         Activity,
-        ActivityType,
-        User,
-        UserEdit
+        ActivityType
     } from '@/services/ApiService';
 
     import {
@@ -249,6 +262,7 @@
         returnUrl = "/persons";
         person: Person | null = null;
         loading = false;
+        activityErrors: any = null;
 
         self = false;
 
@@ -282,7 +296,7 @@
         }
 
         activityBadge(activity: Activity) {
-            return activity.type.substring(0, 2).toUpperCase();
+            return activity.type?.substring(0, 2).toUpperCase();
         }
 
         deleteActivity(activity: Activity, confirm: boolean | null): void {
@@ -299,6 +313,7 @@
         }
 
         editActivity(activity: Activity, finished: boolean): void {
+            this.activityErrors = null;
             if  (!this.person?.activities) return;
             if (!finished) {
                 this.editMode = true;
@@ -307,21 +322,23 @@
             } else {
                 api.editActivity(activity).subscribe(r => {
                     this.person = r;
+                    document.getElementById("closeInputModal")?.click();
+                }, e => {
+                    if (e.response?.status == 400 && e.response?.data) {
+                        this.activityErrors = e.response.data;
+                    }
                 });
             }
         }
 
 
         addActivity(activity: Activity) {
-            this.toEdit = null;
+            this.activityErrors = null;
             if (!this.person?.activities) return;
             if (!activity) {
                 this.editMode = false;
                 this.toEdit = {
                     id: 0,
-                    title: "",
-                    description: "",
-                    website: "",
                     year: (new Date()).getFullYear(),
                     type: ActivityType.PROFESSIONAL
                 }
@@ -329,6 +346,11 @@
             } else {
                 api.addActivity(activity).subscribe(r => {
                     this.person = r;
+                    document.getElementById("closeInputModal")?.click();
+                }, e => {
+                    if (e.response?.status == 400 && e.response?.data) {
+                        this.activityErrors = e.response.data;
+                    }
                 });
             }
         }

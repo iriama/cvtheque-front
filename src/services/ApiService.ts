@@ -10,11 +10,11 @@ export enum ActivityType {
 
 export interface Activity {
     id: number;
-    title: string;
-    description: string;
-    website: string;
-    year: number;
-    type: ActivityType
+    title?: string;
+    description?: string;
+    website?: string;
+    year?: number;
+    type?: ActivityType
 }
 
 export interface Person {
@@ -22,31 +22,31 @@ export interface Person {
     firstname: string;
     lastname: string;
     email: string;
-    website: string;
+    website?: string;
     activities: Activity[];
-    age: number;
+    age?: number;
     professionalTitles: string[]
 }
 
 export interface User extends Person {
-    birthdate: string;
+    birthdate?: string;
 }
 
 export interface UserEdit {
     id: number;
-    firstname: string;
-    lastname: string;
-    password: string;
-    website: string;
-    birthdate: string
+    firstname?: string;
+    lastname?: string;
+    password?: string;
+    website?: string;
+    birthdate?: string
 }
 
 
 export interface UserInvite {
-    firstname: string;
-    lastname: string;
-    email: string,
-    password: string
+    firstname?: string;
+    lastname?: string;
+    email?: string,
+    password?: string
 }
 
 export default class ApiService {
@@ -62,6 +62,13 @@ export default class ApiService {
             const token = this.getToken();
             if (token) {
                 request.headers = {"Authorization": "Bearer " + token, ... request.headers }
+            }
+
+            // if a key is an empty string set to null
+            if(request.data) for(const [key, value] of Object.entries(request.data)) {
+                if (value === "") {
+                    request.data[key] = null;
+                }
             }
 
             return Promise.resolve(request);
