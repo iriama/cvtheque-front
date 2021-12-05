@@ -144,4 +144,5 @@ export default class ApiService {
     }
 }
 
-export const api: ApiService = new ApiService( "http://localhost:8081/api" );
+// export const api: ApiService = new ApiService( "http://localhost:8081/api" );
+export const api: ApiService = new ApiService( "/api" );
