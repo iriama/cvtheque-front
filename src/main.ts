@@ -26,6 +26,7 @@ Vue.filter("error", function (value: string) {
 
   if (value == "BLANK") return "Le champ ne doit pas être vide";
   if (value == "FORMAT") return "Format incorrect";
+  if (value == "UNIQUE_EMAIL") return "Cette adresse est déjà utilisée";
   if (value.startsWith("MIN_")) return "La valeur doit être supérieure ou égale à " + value.split("_")[1];
   if (value.startsWith("MAX_")) return "La valeur doit être inférieure ou égale à " + value.split("_")[1];
   if (value.startsWith("LENGTH_")) {
