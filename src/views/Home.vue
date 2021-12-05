@@ -49,6 +49,7 @@
       z-index: -1;
       height: 100%;
       overflow: hidden;
+      background: black;
     }
 
     .carousel-caption {
