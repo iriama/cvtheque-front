@@ -91,7 +91,7 @@
             api.invite(this.form).subscribe(r => {
                 this.form = { ... this.empty } // clone
                 this.alertSuccess = true;
-                this.alertMessage = "Personne ajoutée avec succès."
+                this.alertMessage = "Personne ajoutée avec succès.";
                 this.loading = false;
             });
         }

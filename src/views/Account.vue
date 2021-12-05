@@ -1,6 +1,6 @@
 <template>
     <div id="account">
-        <Alert v-bind:message="error" />
+        <Alert v-bind:message="alertMessage" v-bind:success="alertSuccess" />
         <Spinner v-if="!account || loading" />
         <div v-else class="container" id="main">
             <div class="card" id="infos">
@@ -94,7 +94,8 @@
         }
     })
     export default class Account extends Vue {
-        error = "";
+        alertMessage = "";
+        alertSuccess = false;
         loading = false;
         account: User | null = null;
         form: UserEdit | null = null;
@@ -122,9 +123,12 @@
         edit(): void {
             if (this.form) {
                 this.loading = true;
+                this.alertMessage = "";
                 api.edit(this.form).subscribe(r => {
                     this.account = r;
                     this.map();
+                    this.alertSuccess = true;
+                    this.alertMessage = "Modification apportées.";
                     this.loading = false;
                 });
             }
